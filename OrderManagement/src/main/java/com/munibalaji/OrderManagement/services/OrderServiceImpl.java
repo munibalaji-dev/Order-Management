@@ -1,5 +1,5 @@
 package com.munibalaji.OrderManagement.services;
-
+import com.munibalaji.OrderManagement.OrderSpecification;
 import com.munibalaji.OrderManagement.dtos.OrderRequestDto;
 import com.munibalaji.OrderManagement.dtos.OrderResponseDto;
 import com.munibalaji.OrderManagement.exceptions.ResourceNotFoundException;
@@ -8,10 +8,14 @@ import com.munibalaji.OrderManagement.models.OrderStatus;
 import com.munibalaji.OrderManagement.models.Orders;
 import com.munibalaji.OrderManagement.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-
 import java.util.List;
+
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -43,13 +47,26 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<OrderResponseDto> getAllOrders() {
+    public Page<OrderResponseDto> getAllOrders(int page, int size, String sortBy, String direction) {
 
-        List<Orders> getAllOrders = orderRepository.findAll();
+//        Sort sort = direction.equalsIgnoreCase("asc") ? // here i used the ternary operator condition ? value1 : value2;
+//                                                                    // --if condition is true → use value1//else → use value2
+//       Sort.by("price").descending().and(Sort.by("productName").ascending())
+//        Sort.by(sortBy).ascending() :
+//        Sort.by(sortBy).descending();
 
-        return getAllOrders.stream()
-                .map(OrdersMapper :: entityToOrderResponseDto)
-                .toList();
+        Sort sort;
+
+        if(direction.equalsIgnoreCase("asc")){
+            sort = Sort.by(sortBy).ascending();
+        }else{
+            sort = Sort.by(sortBy).descending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Orders> page1 = orderRepository.findAll(pageable);
+
+        return page1.map(OrdersMapper::entityToOrderResponseDto);
     }
 
     @Override
@@ -83,6 +100,43 @@ public class OrderServiceImpl implements OrderService{
         return orders.stream()
                 .map(OrdersMapper::entityToOrderResponseDto)
                 .toList();
+    }
+
+    @Override
+    public Page<OrderResponseDto> filterOrders(Double minPrice, String name, OrderStatus status, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Orders> specification = Specification
+                .allOf( OrderSpecification.hasMinPrice(minPrice),
+                        OrderSpecification.hasStatus(status),
+                        OrderSpecification.hasProductName(name));
+
+
+        Page<Orders> page1 = orderRepository.findAll(specification, pageable);
+
+
+        return page1.map(OrdersMapper::entityToOrderResponseDto);
+
+
+
+
+
+
+
+
+//        Page<Orders> ordersPage;
+//
+//        if(minPrice != null){
+//            ordersPage = orderRepository.findByPriceGreaterThan(minPrice, pageable);
+//        }else if(name != null){
+//            ordersPage = orderRepository.findByProductNameContaining(name, pageable);
+//        } else if (status != null) {
+//            ordersPage = orderRepository.findByStatus(status, pageable);
+//        }else{
+//            ordersPage = orderRepository.findAll(pageable);
+//        }
+//        return ordersPage.map(OrdersMapper :: entityToOrderResponseDto);
     }
 
 }

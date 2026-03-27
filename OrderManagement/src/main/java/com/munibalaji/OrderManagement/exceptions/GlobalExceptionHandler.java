@@ -14,4 +14,9 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new ExceptionDto(HttpStatus.NOT_FOUND, resourceNotFoundException.getMessage()),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneric(Exception ex){
+        return ResponseEntity.status(500).body("something went wrong");
+    }
 }
