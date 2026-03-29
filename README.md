@@ -38,8 +38,11 @@ ordermanagement
 API Base URL
 ------------
 http://localhost:3005/api/v1/orders
+
 API Endpoints :
+-----------------
 Method	Endpoint	Description : 
+
 GET	/	Get all orders (with pagination, sorting)
 GET	/filter	Filter orders
 GET	/{id}	Get order by ID
@@ -80,6 +83,11 @@ Future Enhancements
 -----------------------
 Add authentication (JWT)
 Microservices architecture
+
+How to Run
+------------
+Clone the repository
+git clone <your-repo-url>
 
 Author
 ----------
