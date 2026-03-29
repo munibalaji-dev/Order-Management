@@ -33,8 +33,10 @@ public class OrderController {
     @Operation(summary = "To create an order")
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@Valid @RequestBody OrderRequestDto orderRequestDto){
-        return new ResponseEntity<>(orderService.createOrder(orderRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.createOrder(orderRequestDto), HttpStatus.CREATED);
     }
+
+
 
     @Operation(summary = "Enter order id to get the order")
     @GetMapping("/{id}")
@@ -42,16 +44,16 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
+
+
+
     @Operation(summary = "To get all the orders")
     @GetMapping
-    public ResponseEntity<Page<OrderResponseDto>> getAllOrders(@RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "5") int size,
-                                                               @RequestParam(defaultValue = "id") String sortBy,
-                                                               @RequestParam(defaultValue = "asc") String direction) {
+    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
 
-
-        return new ResponseEntity<>(orderService.getAllOrders(page, size, sortBy, direction), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
+
 
     @Operation(summary = "Enter order id to update your order")
     @PutMapping("/{id}")
@@ -59,28 +61,30 @@ public class OrderController {
         return new ResponseEntity<>(orderService.updateOrderById(id, orderRequestDto), HttpStatus.OK);
     }
 
+
+
+
     @Operation(summary = "Enter order id to delete your order")
     @DeleteMapping("/{id}")
     public ResponseEntity<OrderResponseDto> deleteOrderById(@PathVariable Long id){
         return new ResponseEntity<>(orderService.deleteOrderById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/status/{status}")
-    public List<OrderResponseDto> getOrderByStatus(@PathVariable OrderStatus status){
-        return orderService.getOrderByStatus(status);
-    }
 
-
-    @GetMapping("/filter1")
-    public ResponseEntity<Page<OrderResponseDto>> filterOrders(
+    @GetMapping("/search")
+    public ResponseEntity<Page<OrderResponseDto>> search(
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) OrderStatus status,
+            @RequestParam(required = false) OrderStatus orderStatus,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
 
         return ResponseEntity.ok(
-                orderService.filterOrders(minPrice, name, status, page, size)
+                orderService.searchOrders(minPrice, name, orderStatus, page, size, sortBy, direction)
         );
     }
+
 }

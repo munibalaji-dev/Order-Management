@@ -1,5 +1,5 @@
 package com.munibalaji.OrderManagement.services;
-import com.munibalaji.OrderManagement.OrderSpecification;
+import com.munibalaji.OrderManagement.repositories.specifications.OrderSpecification;
 import com.munibalaji.OrderManagement.dtos.OrderRequestDto;
 import com.munibalaji.OrderManagement.dtos.OrderResponseDto;
 import com.munibalaji.OrderManagement.exceptions.ResourceNotFoundException;
@@ -47,26 +47,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Page<OrderResponseDto> getAllOrders(int page, int size, String sortBy, String direction) {
+    public List<OrderResponseDto> getAllOrders() {
 
-//        Sort sort = direction.equalsIgnoreCase("asc") ? // here i used the ternary operator condition ? value1 : value2;
-//                                                                    // --if condition is true → use value1//else → use value2
-//       Sort.by("price").descending().and(Sort.by("productName").ascending())
-//        Sort.by(sortBy).ascending() :
-//        Sort.by(sortBy).descending();
+        List<Orders> orders = orderRepository.findAll();
 
-        Sort sort;
-
-        if(direction.equalsIgnoreCase("asc")){
-            sort = Sort.by(sortBy).ascending();
-        }else{
-            sort = Sort.by(sortBy).descending();
-        }
-
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Orders> page1 = orderRepository.findAll(pageable);
-
-        return page1.map(OrdersMapper::entityToOrderResponseDto);
+        return orders.stream()
+                .map(OrdersMapper::entityToOrderResponseDto)
+                .toList();
     }
 
     @Override
@@ -87,56 +74,47 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderResponseDto deleteOrderById(Long id) {
 
-        Orders orders = orderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Id mismatch to delete your order check it once and try again"));
+        Orders orders = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id mismatch to delete your order check it once and try again"));
         orderRepository.delete(orders);
         return null;
     }
 
-    @Override
-    public List<OrderResponseDto> getOrderByStatus(OrderStatus status) {
-
-        List<Orders> orders = orderRepository.findOrdersByStatus(status);
-
-        return orders.stream()
-                .map(OrdersMapper::entityToOrderResponseDto)
-                .toList();
-    }
-
-    @Override
-    public Page<OrderResponseDto> filterOrders(Double minPrice, String name, OrderStatus status, int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        Specification<Orders> specification = Specification
-                .allOf( OrderSpecification.hasMinPrice(minPrice),
-                        OrderSpecification.hasStatus(status),
-                        OrderSpecification.hasProductName(name));
-
-
-        Page<Orders> page1 = orderRepository.findAll(specification, pageable);
-
-
-        return page1.map(OrdersMapper::entityToOrderResponseDto);
 
 
 
+    public Page<OrderResponseDto> searchOrders(Double minPrice, String name, OrderStatus orderStatus,
+                                               int page, int size, String sortBy, String direction){
 
 
+        Sort sort = direction.equalsIgnoreCase("asc") ?
+                Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending();
 
+        Pageable pageable = PageRequest.of(page, size, sort);
 
+        Specification<Orders> specification = (root, query, cb) -> cb.conjunction();
 
-//        Page<Orders> ordersPage;
+        if(minPrice != null){
+            specification = specification.and(OrderSpecification.hasMinPrice(minPrice));
+        }
+
+        if (name != null){
+            specification = specification.and(OrderSpecification.hasProductName(name));
+        }
+
+        if (orderStatus != null){
+            specification = specification.and(OrderSpecification.hasStatus(orderStatus));
+        }
+
+//        Specification<Orders> specification = Specification.allOf(
+//                 OrderSpecification.hasMinPrice(minPrice))
+//                .and(OrderSpecification.hasStatus(orderStatus))
+//                .and(OrderSpecification.hasProductName(name));
 //
-//        if(minPrice != null){
-//            ordersPage = orderRepository.findByPriceGreaterThan(minPrice, pageable);
-//        }else if(name != null){
-//            ordersPage = orderRepository.findByProductNameContaining(name, pageable);
-//        } else if (status != null) {
-//            ordersPage = orderRepository.findByStatus(status, pageable);
-//        }else{
-//            ordersPage = orderRepository.findAll(pageable);
-//        }
-//        return ordersPage.map(OrdersMapper :: entityToOrderResponseDto);
+//
+        return orderRepository.findAll(specification, pageable)
+                .map(OrdersMapper::entityToOrderResponseDto);
+
     }
 
 }

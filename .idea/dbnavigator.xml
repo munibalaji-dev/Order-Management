@@ -11,10 +11,10 @@
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
-      <assistant-state connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+      <assistant-state connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
         <tools />
       </assistant-state>
-      <assistant-state connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+      <assistant-state connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
       </assistant-state>
     </assistants>
@@ -30,16 +30,33 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="343b2ebd-1b14-4453-bde8-999df6c6dcff">
-      <console name="Order Management" type="STANDARD" schema="mysql" session="Main" />
+      <console name="Order Management" type="STANDARD" schema="ordersmanagement" session="Main"><![CDATA[INSERT INTO orders (product_name, quantity, price, status) VALUES ('Gaming Laptop', 1, 1200.50, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Wireless Mouse', 2, 25.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Mechanical Keyboard', 1, 85.99, 'SHIPPED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Monitor 24 inch', 2, 199.00, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('USB-C Cable', 5, 12.50, 'CANCELLED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Smartphone S23', 1, 899.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Bluetooth Headphones', 1, 150.00, 'SHIPPED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Office Chair', 1, 210.00, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Webcam HD', 3, 45.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('External Hard Drive', 1, 110.00, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Sony PS5 Console', 1, 499.99, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Leather Office Bag', 1, 120.00, 'SHIPPED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('4K Projector', 1, 850.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Electric Kettle', 2, 35.50, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Yoga Mat', 3, 25.00, 'CANCELLED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Desktop PC Case', 1, 145.00, 'SHIPPED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Smart Watch Series 9', 1, 399.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('USB Hub 7-Port', 4, 22.99, 'DELIVERED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('Graphic Tablet', 1, 299.00, 'PLACED');
+INSERT INTO orders (product_name, quantity, price, status) VALUES ('LED Desk Lamp', 2, 45.00, 'PLACED');]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" object-ref="schemas/ordersmanagement/tables/orders" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabasePrerequisiteManager">
     <prerequisites />
@@ -50,9 +67,20 @@
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="343b2ebd-1b14-4453-bde8-999df6c6dcff" dataset="ordersmanagement.orders" active-filter-id="EMPTY_FILTER" />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
+  </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
+  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
+    <recently-used-interfaces>
+      <mapping database-type="MYSQL" interface-id="DEFAULT" />
+    </recently-used-interfaces>
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
@@ -609,5 +637,9 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>

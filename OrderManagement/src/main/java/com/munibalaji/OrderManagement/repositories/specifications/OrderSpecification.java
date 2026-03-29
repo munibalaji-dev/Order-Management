@@ -1,4 +1,4 @@
-package com.munibalaji.OrderManagement;
+package com.munibalaji.OrderManagement.repositories.specifications;
 
 import com.munibalaji.OrderManagement.models.OrderStatus;
 import com.munibalaji.OrderManagement.models.Orders;
@@ -16,8 +16,18 @@ public class OrderSpecification {
                 status == null ? null : criteriaBuilder.equal(root.get("status"), status));
     }
 
-    public static Specification<Orders> hasProductName(String name){
-        return ((root, query, criteriaBuilder) ->
-                name == null ? null : criteriaBuilder.like(root.get("productName"), "%" + name + "%"));
+    public static Specification<Orders> hasProductName(String name) {
+//        return ((root, query, criteriaBuilder) ->
+//                name == null ? null : criteriaBuilder.like(root.get("productName"), "%" + name.toLowerCase()+ "%"));
+
+        return (root, query, criteriaBuilder) -> {
+            if (name == null || name.trim().isEmpty()) return null;
+
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("productName")),
+                    "%" + name.toLowerCase() + "%"
+            );
+
+        };
     }
 }

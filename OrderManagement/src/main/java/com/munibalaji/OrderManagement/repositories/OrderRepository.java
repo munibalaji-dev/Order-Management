@@ -1,6 +1,5 @@
 package com.munibalaji.OrderManagement.repositories;
 
-import com.munibalaji.OrderManagement.models.OrderStatus;
 import com.munibalaji.OrderManagement.models.Orders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long>, JpaSpecificationExecutor<Orders> {
 
-    List<Orders> findOrdersByStatus(OrderStatus status);
 
 //    Page<Orders> findByPriceGreaterThan(Double price, Pageable pageable);
 //
