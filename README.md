@@ -86,8 +86,18 @@ Microservices architecture
 
 How to Run
 ------------
-Clone the repository
+1. Clone the repository
 git clone <your-repo-url>
+2. Navigate to project
+cd customermanagement
+3. Configure MySQL in application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/your_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+4. Run the application
+mvn spring-boot:run
+5. Server runs on
+http://localhost:3005
 
 Author
 ----------
