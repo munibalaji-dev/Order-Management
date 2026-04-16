@@ -74,30 +74,33 @@ GET /{id}/details
   "price": 70000,
   "orderStatus": "PLACED"
 }
-
-Architecture
+--------
+Architecture :
 Order Service communicates with other services using Feign:
 
 - Fetch customer data from Customer Service
 - Fetch product data from Product Service
 - Combine responses into a single API response
-
-Database
+------
+Database :
 Dedicated MySQL database
 Stores only:
 customerId
 productId
 order details
+-------
+Testing :
 
-Testing
 APIs tested using Postman
+-------
+Important Design Decisions :
 
-Important Design Decisions
 No direct object references between services
 Loose coupling using IDs
 Aggregation handled at service layer
+-------
+Future Improvements :
 
-Future Improvements
 Validate customer and product before order creation
 Reduce product stock after order placement
 API Gateway implementation
