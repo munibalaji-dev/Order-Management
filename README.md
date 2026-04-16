@@ -64,6 +64,7 @@ GET /{id}/details
   "price": 70000,
   "orderStatus": "PLACED"
 }
+
 ## Database
 
 Dedicated MySQL database used only for Order Service.
