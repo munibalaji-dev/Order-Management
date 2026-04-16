@@ -12,5 +12,5 @@ public interface CustomerClient {
     @GetMapping("/api/v1/customers/{id}")
     CustomerResponseDto getCustomerById(@PathVariable("id") Long id);
 
-
+//abc
 }
