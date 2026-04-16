@@ -64,20 +64,17 @@ GET /{id}/details
   "price": 70000,
   "orderStatus": "PLACED"
 }
-Database
+### Database
+Dedicated **MySQL** database used only for Order Service.
 
-Dedicated MySQL database used only for Order Service.
+### Stores:
+* `customerId`
+* `productId`
+* `quantity`
+* `price`
+* `status`
 
-Stores:
-
-customerId
-productId
-quantity
-price
-status
-
-Architecture Flow
-
+### Architecture Flow
 Order Service communicates with:
 
 Customer Service (fetch customer data)
@@ -85,14 +82,14 @@ Product Service (fetch product data)
 
 Then combines responses using DTO mapping and returns a single aggregated response.
 
-Testing
+### Testing
 Tested using Postman
 Important Design Decisions
 No direct entity relationships between services
 Loose coupling using IDs
 DTO-based aggregation using Feign Client
 
-Future Improvements
+### Future Improvements
 
 Validate customer and product before order creation
 Reduce product stock after order placement
