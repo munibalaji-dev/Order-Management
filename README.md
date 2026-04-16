@@ -42,29 +42,6 @@ GET /customer/{customerId}
 Get Order Details (Integrated Response)  
 GET /{id}/details
 
-## Sample Response
-```json
-{
-  "id": 1,
-  "customer": {
-    "id": 1,
-    "customerName": "Ravi Kumar",
-    "email": "ravi1@gmail.com",
-    "phone": 9000000001,
-    "address": "Hyderabad"
-  },
-  "product": {
-    "id": 1,
-    "productName": "Laptop",
-    "description": "Gaming Laptop",
-    "price": 70000,
-    "stockQuantity": 10
-  },
-  "quantity": 1,
-  "price": 70000,
-  "orderStatus": "PLACED"
-}
-
 ## Database
 
 Dedicated MySQL database used only for Order Service.
@@ -99,3 +76,26 @@ Reduce product stock after order placement
 API Gateway implementation
 Service Discovery using Eureka
 Unit and integration testing
+
+## Sample Response
+```json
+{
+  "id": 1,
+  "customer": {
+    "id": 1,
+    "customerName": "Ravi Kumar",
+    "email": "ravi1@gmail.com",
+    "phone": 9000000001,
+    "address": "Hyderabad"
+  },
+  "product": {
+    "id": 1,
+    "productName": "Laptop",
+    "description": "Gaming Laptop",
+    "price": 70000,
+    "stockQuantity": 10
+  },
+  "quantity": 1,
+  "price": 70000,
+  "orderStatus": "PLACED"
+}
