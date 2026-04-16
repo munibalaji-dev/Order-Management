@@ -1,11 +1,12 @@
 package com.munibalaji.OrderManagement.services;
+import com.munibalaji.OrderManagement.client.CustomerClient;
+import com.munibalaji.OrderManagement.client.ProductClient;
+import com.munibalaji.OrderManagement.dtos.*;
 import com.munibalaji.OrderManagement.repositories.specifications.OrderSpecification;
-import com.munibalaji.OrderManagement.dtos.OrderRequestDto;
-import com.munibalaji.OrderManagement.dtos.OrderResponseDto;
 import com.munibalaji.OrderManagement.exceptions.ResourceNotFoundException;
 import com.munibalaji.OrderManagement.mappers.OrdersMapper;
 import com.munibalaji.OrderManagement.models.OrderStatus;
-import com.munibalaji.OrderManagement.models.Orders;
+import com.munibalaji.OrderManagement.models.Order;
 import com.munibalaji.OrderManagement.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,61 +24,85 @@ public class OrderServiceImpl implements OrderService{
 
     private OrderRepository orderRepository;
 
+    private final CustomerClient client;
+    private final ProductClient productClient;
+
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository){
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            CustomerClient client,
+                            ProductClient productClient){
         this.orderRepository = orderRepository;
+        this.client = client;
+        this.productClient = productClient;
     }
 
 
     @Override
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
 
-        Orders orders = OrdersMapper.orderRequestDtoToEntity(orderRequestDto);
-        Orders saved = orderRepository.save(orders);
+        Order order = OrdersMapper.orderRequestDtoToEntity(orderRequestDto);
+        Order saved = orderRepository.save(order);
 
         return OrdersMapper.entityToOrderResponseDto(saved);
     }
 
+
+
+
+
     @Override
     public OrderResponseDto getOrderById(Long id) {
 
-        Orders getOrderById = orderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order not found with your id check it once and try again"));
+        Order getOrderById = orderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order not found with your id check it once and try again"));
 
         return OrdersMapper.entityToOrderResponseDto(getOrderById);
     }
 
+
+
+
+
     @Override
     public List<OrderResponseDto> getAllOrders() {
 
-        List<Orders> orders = orderRepository.findAll();
+        List<Order> orders = orderRepository.findAll();
 
         return orders.stream()
                 .map(OrdersMapper::entityToOrderResponseDto)
                 .toList();
     }
 
+
+
+
+
     @Override
     public OrderResponseDto updateOrderById(Long id, OrderRequestDto orderRequestDto) {
 
-        Orders orders = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Id mismatch to update your order check it once and try again"));
+        Order order = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Id mismatch to update your order check it once and try again"));
 
-        orders.setProductName(orderRequestDto.getProductName());
-        orders.setQuantity(orderRequestDto.getQuantity());
-        orders.setPrice(orderRequestDto.getPrice());
-        orders.setStatus(orderRequestDto.getStatus());
+//        order.setProductName(orderRequestDto.getProductName());
+        order.setQuantity(orderRequestDto.getQuantity());
+        order.setPrice(orderRequestDto.getPrice());
+        order.setStatus(orderRequestDto.getStatus());
 
-        Orders updatedOrder = orderRepository.save(orders);
+        Order updatedOrder = orderRepository.save(order);
 
         return OrdersMapper.entityToOrderResponseDto(updatedOrder);
     }
 
+
+
+
+
     @Override
     public OrderResponseDto deleteOrderById(Long id) {
 
-        Orders orders = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id mismatch to delete your order check it once and try again"));
-        orderRepository.delete(orders);
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id mismatch to delete your order check it once and try again"));
+        orderRepository.delete(order);
         return null;
     }
+
 
 
 
@@ -92,21 +117,21 @@ public class OrderServiceImpl implements OrderService{
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Specification<Orders> specification = (root, query, cb) -> cb.conjunction();
+        Specification<Order> specification = (root, query, cb) -> cb.conjunction();
 
         if(minPrice != null){
             specification = specification.and(OrderSpecification.hasMinPrice(minPrice));
         }
 
-        if (name != null){
-            specification = specification.and(OrderSpecification.hasProductName(name));
-        }
+//        if (name != null){
+//            specification = specification.and(OrderSpecification.hasProductName(name));
+//        }
 
         if (orderStatus != null){
             specification = specification.and(OrderSpecification.hasStatus(orderStatus));
         }
 
-//        Specification<Orders> specification = Specification.allOf(
+//        Specification<Order> specification = Specification.allOf(
 //                 OrderSpecification.hasMinPrice(minPrice))
 //                .and(OrderSpecification.hasStatus(orderStatus))
 //                .and(OrderSpecification.hasProductName(name));
@@ -114,6 +139,22 @@ public class OrderServiceImpl implements OrderService{
 //
         return orderRepository.findAll(specification, pageable)
                 .map(OrdersMapper::entityToOrderResponseDto);
+
+    }
+
+
+
+
+
+    public OrderDetailsDto getOrderDetails(Long orderId){
+
+        Order order = orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not found"));
+
+        CustomerResponseDto customerResponseDto = client.getCustomerById(order.getCustomerId());
+
+        ProductResponseDto productResponseDto = productClient.getProductById(order.getProductId());
+
+        return OrdersMapper.mapToOrderDetails(order, customerResponseDto, productResponseDto);
 
     }
 

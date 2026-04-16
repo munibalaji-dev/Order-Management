@@ -12,9 +12,12 @@ import lombok.Setter;
 @Setter
 public class OrderRequestDto {
 
-    @Schema(description = "Product Name")
-    @NotBlank(message = "Product name should not be null")
-    private String productName;
+//    @Schema(description = "Product Name")
+//    @NotBlank(message = "Product name should not be null")
+//    private String productName;
+
+    private Long productId;
+    private Long customerId;
 
     @Schema(description = "How many quantities")
     @NotNull(message = "quantity must contain atleast one")

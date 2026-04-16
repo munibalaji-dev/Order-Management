@@ -1,21 +1,17 @@
 package com.munibalaji.OrderManagement.repositories;
 
-import com.munibalaji.OrderManagement.models.Orders;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.munibalaji.OrderManagement.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface OrderRepository extends JpaRepository<Orders, Long>, JpaSpecificationExecutor<Orders> {
+public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
 
 
-//    Page<Orders> findByPriceGreaterThan(Double price, Pageable pageable);
+//    Page<Order> findByPriceGreaterThan(Double price, Pageable pageable);
 //
-//    Page<Orders> findByStatus(OrderStatus status, Pageable pageable);
+//    Page<Order> findByStatus(OrderStatus status, Pageable pageable);
 //
-//    Page<Orders> findByProductNameContaining(String name, Pageable pageable);
+//    Page<Order> findByProductNameContaining(String name, Pageable pageable);
 }

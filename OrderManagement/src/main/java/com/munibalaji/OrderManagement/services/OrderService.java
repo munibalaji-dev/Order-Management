@@ -1,5 +1,6 @@
 package com.munibalaji.OrderManagement.services;
 
+import com.munibalaji.OrderManagement.dtos.OrderDetailsDto;
 import com.munibalaji.OrderManagement.dtos.OrderRequestDto;
 import com.munibalaji.OrderManagement.dtos.OrderResponseDto;
 import com.munibalaji.OrderManagement.models.OrderStatus;
@@ -24,4 +25,7 @@ public interface OrderService {
 
 
     Page<OrderResponseDto> searchOrders(Double minPrice, String name, OrderStatus orderStatus, int page, int size, String sortBy, String direction);
+
+
+    OrderDetailsDto getOrderDetails(Long id);
 }

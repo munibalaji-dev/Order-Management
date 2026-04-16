@@ -1,5 +1,6 @@
 package com.munibalaji.OrderManagement.controllers;
 
+import com.munibalaji.OrderManagement.dtos.OrderDetailsDto;
 import com.munibalaji.OrderManagement.dtos.OrderRequestDto;
 import com.munibalaji.OrderManagement.dtos.OrderResponseDto;
 import com.munibalaji.OrderManagement.models.OrderStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "Order Management", description = "Operations related to orders")
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v3/orders")
 public class OrderController {
 
     private OrderService orderService;
@@ -85,6 +86,12 @@ public class OrderController {
         return ResponseEntity.ok(
                 orderService.searchOrders(minPrice, name, orderStatus, page, size, sortBy, direction)
         );
+    }
+
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<OrderDetailsDto> getOrderDetails(@PathVariable Long id){
+        return ResponseEntity.ok(orderService.getOrderDetails(id));
     }
 
 }

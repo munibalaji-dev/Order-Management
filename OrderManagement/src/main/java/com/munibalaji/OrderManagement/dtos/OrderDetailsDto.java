@@ -6,13 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderResponseDto {
+public class OrderDetailsDto {
 
     private Long id;
-//    private String productName;
-    private Long productId;
-    private Long customerId;
+    private CustomerResponseDto customer;
+    private ProductResponseDto product;
     private Integer quantity;
     private Double price;
-    private OrderStatus status;
+    private OrderStatus orderStatus;
+
 }
