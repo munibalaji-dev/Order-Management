@@ -56,7 +56,8 @@ GET /customer/{customerId}
 ### Get Order Details (Aggregated)
 GET /{id}/details
 
-### Sample Response
+## Sample Response
+
 ```json
 {
   "id": 1,
@@ -74,6 +75,7 @@ GET /{id}/details
   "price": 70000,
   "orderStatus": "PLACED"
 }
+
 --------
 Architecture :
 Order Service communicates with other services using Feign:
